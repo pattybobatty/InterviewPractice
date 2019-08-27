@@ -47,6 +47,11 @@ vector3d operator* (float len, vector3d& vector)
 	return scaledVec;
 }
 
+float sq_magnitude(vector3d& vector)
+{
+	return (vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+}
+
 float magnitude(vector3d& vector)
 {
 #pragma warning( push )
@@ -124,13 +129,26 @@ extern "C"
 		}
 
 		//
+		// Hint direction must be a valid vector with length greater than zero
+		//
+		if (approximately_equal(magnitude(hint_direction), 0.0f))
+		{
+			//
+			// Hint direction is zero length
+			//
+			return false;
+		}
+
+		//
 		// There are multiple intersection points if the two spheres are overlapping and if neither sphere is completely contained inside the other
 		//
 		if (magAB < (length_0 + length_1) &&
 			!(length_0 > magAB && length_0 > magAB + length_1) && 
 			!(length_1 > magAB && length_1 > magAB + length_0))
 		{
-			// many touch points
+			//
+			// Many touch points
+			//
 			float cosAngleAB = cosAngle(length_0, magAB, length_1);
 			float lenAonAB = length_0 * cosAngleAB;
 			vector3d AC = lenAonAB * normAB;
