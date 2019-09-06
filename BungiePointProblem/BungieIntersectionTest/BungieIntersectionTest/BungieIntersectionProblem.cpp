@@ -152,12 +152,9 @@ extern "C"
 			float cosAngleAB = cosAngle(length_0, magAB, length_1);
 			float lenAonAB = length_0 * cosAngleAB;
 			vector3d AC = lenAonAB * normAB;
-			float angle = acosf(cosAngleAB);
-
-#pragma warning( push )
-#pragma warning( disable : 4244)
-			float lenO = tan(angle) * magnitude(AC);
-#pragma warning( pop ) 
+			
+			double magA_sq = ((double)length_0 * (double)length_0);
+			float lenO = sqrt(magA_sq - sq_magnitude(AC));
 
 			//
 			// project hint vector onto plane orthoganal to AC
